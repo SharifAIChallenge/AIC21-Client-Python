@@ -194,7 +194,7 @@ class CurrentState:
                     )
                 )
 
-            cells[cell.y][cell.x] = cell
+            cells[cell.x][cell.y] = cell
 
         return cells
 
