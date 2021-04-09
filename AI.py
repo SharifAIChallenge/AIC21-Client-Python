@@ -5,6 +5,7 @@ from typing import *
 
 
 class AI:
+    antId = int(random.random() * 10000000)
     def __init__(self):
         # Current Game State
         self.game: Game = None
