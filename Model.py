@@ -143,12 +143,23 @@ class Message:
         self.turn = turn
 
 
+class BaseDTO:
+    x: int
+    y: int
+
+    def __init__(self, x, y):
+        super().__init__()
+        self.x = x
+        self.y = y
+
+
 class GameConfig:
     map_width: int = 0
     map_height: int = 0
     ant_type: int = 0
     base_x: int = -1
     base_y: int = -1
+    bases: List["BaseDTO"]
     health_kargar: int = 0
     health_sarbaaz: int = 0
     attack_distance: int = 0
@@ -236,13 +247,14 @@ class Game:
     mapHeight: int
     baseX: int
     baseY: int
-    healthKargar: int
-    healthSarbaaz: int
+    bases: List["BaseDTO"]
+    healthQueen: int
+    healthScorpion: int
     attackDistance: int
     viewDistance: int
-    generateKargar: int
+    generateQueen: int
     rateDeathResource: int
-    generateSarbaaz: int
+    generateScorpion: int
 
     def __init__(self):
         super().__init__()
@@ -252,13 +264,14 @@ class Game:
         self.mapHeight = None
         self.baseX = None
         self.baseY = None
-        self.healthKargar = None
-        self.healthSarbaaz = None
+        self.healthQueen = None
+        self.healthScorpion = None
         self.attackDistance = None
         self.viewDistance = None
-        self.generateKargar = None
-        self.generateSarbaaz = None
+        self.generateQueen = None
+        self.generateScorpion = None
         self.rateDeathResource = None
+        self.bases = None
 
     def initGameConfig(self, gameConfig: "GameConfig"):
         self.antType = gameConfig.ant_type
@@ -266,13 +279,17 @@ class Game:
         self.mapHeight = gameConfig.map_height
         self.baseX = gameConfig.base_x
         self.baseY = gameConfig.base_y
-        self.healthKargar = gameConfig.health_kargar
-        self.healthSarbaaz = gameConfig.health_sarbaaz
+        self.healthQueen = gameConfig.health_kargar
+        self.healthScorpion = gameConfig.health_sarbaaz
         self.attackDistance = gameConfig.attack_distance
         self.viewDistance = gameConfig.view_distance
-        self.generateKargar = gameConfig.generate_kargar
-        self.generateSarbaaz = gameConfig.generate_sarbaaz
+        self.generateQueen = gameConfig.generate_kargar
+        self.generateScorpion = gameConfig.generate_sarbaaz
         self.rateDeathResource = gameConfig.rate_death_resource
+        tmp_bases = []
+        for base in gameConfig.bases:
+            tmp_bases.append(BaseDTO(int(base["x"]), int(base["y"])))
+        self.bases = tmp_bases
 
     def setCurrentState(self, currentState: "CurrentState"):
         self.chatBox = ChatBox(currentState.chat_box)
@@ -319,15 +336,15 @@ class Chat:
 
 
 class AntType(Enum):
-    SARBAAZ = 0
-    KARGAR = 1
+    SCORPION = 0
+    QUEEN = 1
 
     @staticmethod
     def get_value(string: str):
-        if string == "SARBAAZ":
-            return AntType.SARBAAZ
-        if string == "KARGAR":
-            return AntType.KARGAR
+        if string == "SCORPION":
+            return AntType.SCORPION
+        if string == "QUEEN":
+            return AntType.QUEEN
         return None
 
 
